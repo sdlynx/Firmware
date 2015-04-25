@@ -151,11 +151,17 @@ then
 	#
 	# Set USE_IO flag
 	#
+	# disable on AeroCore
+	if ver hwcmp AEROCORE
+	then
+		# do nothing
+	else
 	if param compare SYS_USE_IO 1
 	then
 		set USE_IO yes
 	else
 		set USE_IO no
+	fi
 	fi
 
 	#
@@ -348,6 +354,20 @@ then
 				tone_alarm $TUNE_ERR
 			fi
 
+			if ver hwcmp AEROCORE
+			then
+				if param compare AEROCORE_RC 1
+				then
+					echo "[init] Starting PWM RC input"
+					input_pwm start
+				fi
+				if param compare AEROCORE_RC 2
+				then
+					echo "[init] Starting Spektrum RC input"
+					aerocore_rc start
+				fi
+			fi
+
 			if ver hwcmp PX4FMU_V1
 			then
 				if [ $FMU_MODE == pwm -o $FMU_MODE == gpio ]
@@ -465,6 +485,14 @@ then
 		then
 			mavlink start -d /dev/ttyS2 -b 921600 -m onboard -r 20000
 		fi
+	fi
+
+	#
+	# AeroCore onboard telemetry to Gumstix COM
+	#
+	if ver hwcmp AEROCORE
+	then
+		mavlink start -d /dev/ttyS2 -b 115200 -r 1000
 	fi
 
 	# UAVCAN
