@@ -102,7 +102,7 @@ static unsigned n_partitions_current = 0;
 
 /* note, these will be equally sized */
 #ifdef CONFIG_ARCH_BOARD_AEROCORE
-static char *partition_names_default[] = {"/fs/mtd_params", "/fs/mtd_waypoints", "/fs/mtd_dataman"};
+static char *partition_names_default[] = {"/fs/mtd_params", "/fs/mtd_dataman"};
 #else
 static char *partition_names_default[] = {"/fs/mtd_params", "/fs/mtd_waypoints"};
 #endif
@@ -288,6 +288,17 @@ mtd_start(char *partition_names[], unsigned n_partitions)
 	for (offset = 0, i = 0; i < n_partitions; offset += nblocks, i++) {
 
 		/* Create the partition */
+#ifdef CONFIG_ARCH_BOARD_AEROCORE
+		// on the AeroCore we have a large FRAM and want to allocate the size appropriately
+		// make the first partition (params) = 32 blocks (total size = 32 * blocksize)
+		if (i==0)
+			nblocks = 32;
+		// and the second one (dataman) the remainder (much larger)
+		else if (i==1)
+			nblocks = neraseblocks-32;
+		else
+			nblocks = 0;
+#endif
 
 		part[i] = mtd_partition(mtd_dev, offset, nblocks);
 
@@ -464,7 +475,7 @@ mtd_rwtest(char *partition_names[], unsigned n_partitions)
 	uint8_t v[128], v2[128];
 	for (uint8_t i = 0; i < n_partitions; i++) {
 		ssize_t count = 0;
-        off_t offset = 0;
+	        off_t offset = 0;
 		printf("rwtest %s testing %u bytes\n", partition_names[i], expected_size);
 		int fd = open(partition_names[i], O_RDWR);
 		if (fd == -1) {

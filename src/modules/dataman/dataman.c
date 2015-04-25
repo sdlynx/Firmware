@@ -662,6 +662,10 @@ task_main(int argc, char *argv[])
 	if (g_task_fd >= 0) {
 		/* File exists, check its size */
 		int file_size = lseek(g_task_fd, 0, SEEK_END);
+#ifdef CONFIG_ARCH_BOARD_AEROCORE
+		// this last command fails with mtd device, bypass it for AeroCore
+		file_size = k_sector_size;
+#endif
 		if ((file_size % k_sector_size) != 0) {
 			warnx("Incompatible data manager file %s, resetting it", k_data_manager_device_path);
 			close(g_task_fd);
