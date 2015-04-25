@@ -32,15 +32,9 @@
 ############################################################################
 
 #
-# STM32 driver support code
-#
-# Modules in this directory are compiled for all STM32 targets.
+# MS5611 driver
 #
 
-SRCS		= drv_hrt.c \
-		  drv_pwm_servo.c
-ifeq ($(CONFIG), aerocore_default)
-	SRCS +=	 drv_input_pwm_channels.c
-endif
+MODULE_COMMAND	= aerocore_rc
 
-INCLUDE_DIRS	+= $(NUTTX_SRC)/arch/arm/src/stm32 $(NUTTX_SRC)/arch/arm/src/common
+SRCS		= aerocore_rc.cpp registers.c controls.c dsm.c
