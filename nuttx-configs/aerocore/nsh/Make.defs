@@ -1,7 +1,7 @@
 ############################################################################
 # configs/aerocore/nsh/Make.defs
 #
-#   Copyright (C) 2011 Gregory Nutt. All rights reserved.
+#   Copyright (C) 2014 Gregory Nutt. All rights reserved.
 #   Author: Gregory Nutt <gnutt@nuttx.org>
 #
 # Redistribution and use in source and binary forms, with or without
@@ -60,11 +60,10 @@ ARCHCPUFLAGS		 = -mcpu=cortex-m4 \
 			   -mfpu=fpv4-sp-d16 \
 			   -mfloat-abi=hard
 
+# Pull in *just* libm from the toolchain ... this is grody
 
 # enable precise stack overflow tracking
-ifeq ($(CONFIG_ARMV7M_STACKCHECK),y)
-INSTRUMENTATIONDEFINES	 = -finstrument-functions -ffixed-r10
-endif
+INSTRUMENTATIONDEFINES	 = -ffixed-r10
 
 # pull in *just* libm from the toolchain ... this is grody
 LIBM			 = "${shell $(CC) $(ARCHCPUFLAGS) -print-file-name=libm.a}"
@@ -120,7 +119,6 @@ endif
 ARCHCFLAGS		 = -std=gnu99
 ARCHCXXFLAGS		 = -fno-exceptions -fno-rtti -std=gnu++0x
 ARCHWARNINGS		 = -Wall \
-			   -Wno-sign-compare \
 			   -Wextra \
 			   -Wdouble-promotion \
 			   -Wshadow \

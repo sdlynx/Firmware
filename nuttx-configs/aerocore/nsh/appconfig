@@ -40,3 +40,13 @@ CONFIGURED_APPS	+= examples/nsh
 # The NSH application library
 CONFIGURED_APPS += nshlib
 CONFIGURED_APPS += system/readline
+
+ifeq ($(CONFIG_CAN),y)
+#CONFIGURED_APPS += examples/can
+endif
+
+#ifeq ($(CONFIG_USBDEV),y)
+#ifeq ($(CONFIG_CDCACM),y)
+CONFIGURED_APPS += examples/cdcacm
+#endif
+#endif

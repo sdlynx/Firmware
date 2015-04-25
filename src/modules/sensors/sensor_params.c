@@ -968,12 +968,12 @@ PARAM_DEFINE_FLOAT(BAT_V_SCALING, 0.0082f);
 /**
  * Scaling factor for battery voltage sensor on AeroCore.
  *
- * For R70 = 133K, R71 = 10K --> scale = 1.8 * 143 / (4096*10) = 0.0063
+ * For Rtop = 100K, Rbottom = 10K --> scale = 3.3 * 110 / (4096*10) = 0.0088623
  *
  * @board CONFIG_ARCH_BOARD_AEROCORE
  * @group Battery Calibration
  */
-PARAM_DEFINE_FLOAT(BAT_V_SCALING, 0.0063f);
+PARAM_DEFINE_FLOAT(BAT_V_SCALING, 0.0088623f);
 #else
 /**
  * Scaling factor for battery voltage sensor on FMU v1.

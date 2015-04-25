@@ -45,15 +45,14 @@
 #include "board_config.h"
 
 #include <arch/board/board.h>
-#include <systemlib/err.h>
 
 /*
- * Ideally we'd be able to get these from up_internal.h,
- * but since we want to be able to disable the NuttX use
- * of leds for system indication at will and there is no
- * separate switch, we need to build independent of the
- * CONFIG_ARCH_LEDS configuration switch.
- */
+* Ideally we'd be able to get these from up_internal.h,
+* but since we want to be able to disable the NuttX use
+* of leds for system indication at will and there is no
+* separate switch, we need to build independent of the
+* CONFIG_ARCH_LEDS configuration switch.
+*/
 __BEGIN_DECLS
 extern void led_init(void);
 extern void led_on(int led);
@@ -79,7 +78,7 @@ __EXPORT void led_on(int led)
 		break;
 
 	default:
-		warnx("LED ID not recognized\n");
+		break;
 	}
 }
 
@@ -95,7 +94,7 @@ __EXPORT void led_off(int led)
 		break;
 
 	default:
-		warnx("LED ID not recognized\n");
+		break;
 	}
 }
 
@@ -117,6 +116,6 @@ __EXPORT void led_toggle(int led)
 		break;
 
 	default:
-		warnx("LED ID not recognized\n");
+		break;
 	}
 }

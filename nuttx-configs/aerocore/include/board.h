@@ -2,7 +2,7 @@
  * configs/aerocore/include/board.h
  * include/arch/board/board.h
  *
- *   Copyright (C) 2009 Gregory Nutt. All rights reserved.
+ *   Copyright (C) 2014 Gregory Nutt. All rights reserved.
  *   Author: Gregory Nutt <gnutt@nuttx.org>
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,14 +34,15 @@
  *
  ************************************************************************************/
 
-#ifndef __ARCH_BOARD_BOARD_H
-#define __ARCH_BOARD_BOARD_H
+#ifndef __CONFIG_AEROCORE_INCLUDE_BOARD_H
+#define __CONFIG_AEROCORE_INCLUDE_BOARD_H
 
 /************************************************************************************
  * Included Files
  ************************************************************************************/
 
 #include <nuttx/config.h>
+
 #ifndef __ASSEMBLY__
 # include <stdint.h>
 #endif
@@ -145,7 +146,7 @@
 #define STM32_APB2_TIM11_CLKIN  (2*STM32_PCLK2_FREQUENCY)
 
 /* Timer Frequencies, if APBx is set to 1, frequency is same to APBx
- * otherwise frequency is 2xAPBx.
+ * otherwise frequency is 2xAPBx. 
  * Note: TIM1,8 are on APB2, others on APB1
  */
 
@@ -161,9 +162,9 @@
 #define GPIO_USART1_RX	GPIO_USART1_RX_2
 #define GPIO_USART1_TX	GPIO_USART1_TX_2
 
-/* USART2 on PD[5,6]: J5 Breakout */
+/* USART2 on PD[5,6]: J9 */
 #define GPIO_USART2_RX	GPIO_USART2_RX_2
-#define GPIO_USART2_TX	GPIO_USART2_TX_2
+#define GPIO_USART2_TX  GPIO_USART2_TX_2
 #define GPIO_USART2_CTS	0 // unused
 #define GPIO_USART2_RTS	0 // unused
 
@@ -178,13 +179,19 @@
 #define GPIO_UART7_TX	GPIO_UART7_TX_1
 
 /*
- * UART8 on PE[0-1]: System Console on Port C of USB (J7)
+ * UART8 on PE[0-1]: Spektrum Receiver
  * No alternate pin config
 */
 
 /* USART[1,6] require a RX DMA configuration */
 #define DMAMAP_USART1_RX DMAMAP_USART1_RX_2
 #define DMAMAP_USART6_RX DMAMAP_USART6_RX_2
+
+/*
+* CAN1 on PD[0-1]
+*/
+#define GPIO_CAN1_RX   GPIO_CAN1_RX_3
+#define GPIO_CAN1_TX   GPIO_CAN1_TX_3
 
 /*
  * I2C
@@ -203,14 +210,14 @@
 /*
  * SPI
  */
-/* PA[4-7] SPI1 broken out on J12 */
+/* PA[4-7] SPI1 broken out on J12 */ 
 #define GPIO_SPI1_NSS	(GPIO_OUTPUT|GPIO_PUSHPULL|GPIO_SPEED_2MHz|GPIO_OUTPUT_SET|GPIO_PORTA|GPIO_PIN4) /* should be GPIO_SPI1_NSS_2 but use as a GPIO */
 #define GPIO_SPI1_SCK	(GPIO_SPI1_SCK_1|GPIO_SPEED_50MHz)
 #define GPIO_SPI1_MISO	(GPIO_SPI1_MISO_1|GPIO_SPEED_50MHz)
 #define GPIO_SPI1_MOSI	(GPIO_SPI1_MOSI_1|GPIO_SPEED_50MHz)
 
 /* PB[12-15]: SPI2 connected to DuoVero SPI1 */
-#define GPIO_SPI2_NSS	(GPIO_OUTPUT|GPIO_PUSHPULL|GPIO_SPEED_2MHz|GPIO_OUTPUT_SET|GPIO_PORTB|GPIO_PIN9) /* should be GPIO_SPI2_NSS_2 but use as a GPIO */
+#define GPIO_SPI2_NSS	(GPIO_OUTPUT|GPIO_PUSHPULL|GPIO_SPEED_2MHz|GPIO_OUTPUT_SET|GPIO_PORTB|GPIO_PIN12) /* should be GPIO_SPI2_NSS_2 but use as a GPIO */
 #define GPIO_SPI2_SCK	(GPIO_SPI2_SCK_2|GPIO_SPEED_50MHz)
 #define GPIO_SPI2_MISO	(GPIO_SPI2_MISO_1|GPIO_SPEED_50MHz)
 #define GPIO_SPI2_MOSI	(GPIO_SPI2_MOSI_1|GPIO_SPEED_50MHz)
@@ -229,12 +236,14 @@
 /************************************************************************************
  * Public Data
  ************************************************************************************/
+
 #ifndef __ASSEMBLY__
 
 #undef EXTERN
 #if defined(__cplusplus)
 #define EXTERN extern "C"
-extern "C" {
+extern "C"
+{
 #else
 #define EXTERN extern
 #endif
@@ -247,12 +256,12 @@ extern "C" {
  *
  * Description:
  *   All STM32 architectures must provide the following entry point.  This entry point
- *   is called early in the intitialization -- after all memory has been configured
+ *   is called early in the initialization -- after all memory has been configured
  *   and mapped but before any devices have been initialized.
  *
  ************************************************************************************/
 
-EXTERN void stm32_boardinitialize(void);
+void stm32_boardinitialize(void);
 
 #undef EXTERN
 #if defined(__cplusplus)
@@ -260,4 +269,4 @@ EXTERN void stm32_boardinitialize(void);
 #endif
 
 #endif /* __ASSEMBLY__ */
-#endif  /* __ARCH_BOARD_BOARD_H */
+#endif  /* __CONFIG_AEROCORE_INCLUDE_BOARD_H */

@@ -70,6 +70,20 @@
 
 #include <systemlib/cpuload.h>
 #include <systemlib/perf_counter.h>
+#include <systemlib/param/param.h>
+
+/**
+* Configure the RC input for the AeroCore
+*
+* 1 = pwm (starts input_pwm app)
+* 2 = spektrum (starts input_spektrum app)
+* 0 = no app started (no RC input or PPM use through fmu app)
+*
+* @min = 0
+* @max = 2
+* @group = AeroCore
+*/
+PARAM_DEFINE_INT32(AEROCORE_RC, 0);
 
 /****************************************************************************
  * Pre-Processor Definitions
@@ -94,21 +108,23 @@
 #endif
 
 /*
- * Ideally we'd be able to get these from up_internal.h,
- * but since we want to be able to disable the NuttX use
- * of leds for system indication at will and there is no
- * separate switch, we need to build independent of the
- * CONFIG_ARCH_LEDS configuration switch.
- */
+* Ideally we'd be able to get these from up_internal.h,
+* but since we want to be able to disable the NuttX use
+* of leds for system indication at will and there is no
+* separate switch, we need to build independent of the
+* CONFIG_ARCH_LEDS configuration switch.
+*/
 __BEGIN_DECLS
 extern void led_init(void);
 extern void led_on(int led);
 extern void led_off(int led);
 __END_DECLS
 
+
 /****************************************************************************
  * Protected Functions
  ****************************************************************************/
+//__EXPORT void up_netinitialize(void){}
 
 #if defined(CONFIG_FAT_DMAMEMORY)
 # if !defined(CONFIG_GRAN) || !defined(CONFIG_FAT_DMAMEMORY)
@@ -260,6 +276,13 @@ __EXPORT int nsh_archinitialize(void)
 	drv_led_start();
 	led_off(LED_AMBER);
 
+
+	/* configure the power mux sense input */
+	stm32_configgpio(GPIO_POWER_MUX_SENSE);
+
+	/* configure spektrum power controller gpio */
+	stm32_configgpio(GPIO_SPEKTRUM_PWR_EN);
+
 	/* Configure Sensors on SPI bus #3 */
 	spi3 = up_spiinitialize(3);
 	if (!spi3) {
@@ -293,3 +316,4 @@ __EXPORT int nsh_archinitialize(void)
 
 	return OK;
 }
+
