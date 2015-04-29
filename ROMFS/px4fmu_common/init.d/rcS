@@ -599,6 +599,19 @@ then
 		echo "[init] No addons script: $EXTRAS_FILE"
 	fi
 
+	#
+	# Configure Land Yacht
+	#
+	sh /etc/init.d/land_yacht
+
+	#
+	# Configure UART for Duovero
+	#
+	# sh /etc/init.d/rc.usb
+
+	# mavlink start -r 10000 -d /dev/ttyS2 -x
+	# exit
+
 	if [ $EXIT_ON_END == yes ]
 	then
 		echo "[init] Exit from nsh"

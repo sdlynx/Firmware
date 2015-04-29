@@ -1,0 +1,9 @@
+#
+# This file runs commands upon startup of the controller
+#
+
+# Enable PWM control
+# fmu mode_pwm_gpio would configure the use of gpio as well
+
+fmu mode_pwm
+pwm arm
