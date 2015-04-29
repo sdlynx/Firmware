@@ -1,0 +1,3 @@
+[submodule "NuttX"]
+	path = NuttX
+	url = https://github.com/aerocore/NuttX
